@@ -1,0 +1,45 @@
+---
+title: "Comics WOZ analysis"
+output: html_notebook
+---
+```{r}
+#libraries
+library(ggplot2)
+library(car)
+library(dplyr)
+library(reshape2)
+library(pwr)
+library(irr)
+library(coin)
+```
+```{r}
+setwd("comics-woz/")
+```
+
+```{r}
+comics_data <- read.table("comic_sim_data.csv",header=TRUE,sep=",")
+head(comics_data)
+```
+```{r}
+#comics_data <- group_by(comics_data, condition)
+aggregate <- summarise(comics_data,
+                       #visual clarity counts
+                       w_visual_clarity = sum(length(which(visual_clarity==1)))/length(story)*100,
+                       c_visual_clarity = sum(length(which(visual_clarity==0)))/length(story)*100,
+                       #visual creativity counts
+                       w_visual_creativity = sum(length(which(visual_creativity==1)))/length(story)*100,
+                       c_visual_creativity = sum(length(which(visual_creativity==0)))/length(story)*100,
+                       #narrative clarity counts
+                       w_narrative_clarity = sum(length(which(visual_clarity==1)))/length(visual_clarity)*100,
+                       c_narrative_clarity = sum(length(which(visual_clarity==0)))/length(visual_clarity)*100,
+                       #narrative creativity counts
+                       w_narrative_creativity = sum(length(which(visual_clarity==1)))/length(visual_clarity)*100,
+                       c_narrative_creativity = sum(length(which(visual_clarity==0)))/length(visual_clarity)*100,
+                       #overall counts
+                       w_overall = sum(length(which(overall==1)))/length(overall)*100,
+                       c_overall = sum(length(which(overall==0)))/length(overall)*100
+                       )
+
+aggregate
+```
+
