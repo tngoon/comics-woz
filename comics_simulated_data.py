@@ -6,10 +6,14 @@ import numpy as np
 
 ###PARAMETERS###
 #48 total pairs seed 5 times each
-pids = list(range(240))
+pids = list(range(24))
 
 #list columns
-columns = ['story','set','visual_clarity', 'visual_creativity', 'narrative_clarity', 'narrative_creativity', 'overall']
+columns = ['condition','story','visual_clarity', 'visual_creativity', 'narrative_clarity', 'narrative_creativity', 'overall']
+conditions = ['w','c']
+
+#list DVs
+dvs = ['visual_clarity', 'visual_creativity', 'narrative_clarity', 'narrative_creativity', 'overall']
 
 ###MAKE THE RANDOM SAMPLE###
 
@@ -23,26 +27,18 @@ choices = [0,1]
 #make the empty dataframe w/ participants and DVs as columns
 df = pd.DataFrame(index=pids, columns=columns)
 
+#divide data into half for each condition
+df['condition'] = np.random.choice(conditions, size=len(df), p=[.50,.50])
 #give each row a story prompt
 df['story'] = np.random.choice(stories, size=len(df), p=[.33,.33,.34])
 
-#each pair in each story is seen 5 times
-for story in stories:
-	df['set'] = np.random.choice(nset, size=len(df), p=[.20,.20,.20,.20,.20])
 
-#randomize DVs into condition
-# for dv in dvs:
-# 	df[dv] = np.random.choice(choices, size=len(df), p=[.30,.70])
+#randomize how many times a comic is chosen up to 5 times each
+for dv in dvs:
+	df[dv] = np.random.randint(0,6, size=(24,1))
 
-#randomly assign either 1 or 0 for each DV 
-df['visual_clarity'] = np.random.randint(0,2, size=(240,1))
-df['visual_creativity'] = np.random.randint(0,2, size=(240,1))
-df['narrative_clarity'] = np.random.randint(0,2, size=(240,1))
-df['narrative_creativity'] = np.random.randint(0,2, size=(240,1))
-df['overall'] = np.random.randint(0,2, size=(240,1))
-
-print(df)
+print(df.head)
 
 #export dataframe to csv
-df.to_csv('comic_sim_data.csv')
+df.to_csv('comic_sim_data2.csv')
 
