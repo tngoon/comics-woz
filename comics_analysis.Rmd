@@ -20,11 +20,12 @@ head(comics_data)
 ```{r}
 comics_data <- group_by(comics_data,condition)
 aggregate <- summarise(comics_data,
-                       v_clarity=length(which(vclarity==1)),
-                       v_creativity = length(which(vcreativity==1)),
-                       n_clarity = length(which(nclarity==1)),
-                       n_creativity = length(which(ncreativity==1)),
-                       all = length(which(overall==1)))
+                       n = length(condition),
+                       v_clarity=length(which(vclarity==1))/length(condition),
+                       v_creativity = length(which(vcreativity==1))/length(condition),
+                       n_clarity = length(which(nclarity==1))/length(condition),
+                       n_creativity = length(which(ncreativity==1))/length(condition),
+                       all = length(which(overall==1))/length(condition))
 
 aggregate
 ```
@@ -44,25 +45,22 @@ chisq.test(ncreativity,correct=FALSE)
 overall <- table(comics_data$condition,comics_data$overall)
 chisq.test(overall,correct=FALSE)
 ```
-```{r}
-overall
-```
 
 ```{r}
-vclarity = c(aggregate$c_vclarity,aggregate$w_vclarity)
-vcreativity = c(aggregate$c_vcreativity,aggregate$w_vcreativity)
-nclarity = c(aggregate$c_nclarity,aggregate$w_nclarity)
-ncreativity = c(aggregate$c_ncreativity,aggregate$w_ncreativity)
-overall = c(aggregate$c_overall,aggregate$w_overall)
+data2 <- read.table("data2.csv",header=TRUE,sep=",")
+counts <- summarise(data2,
+                c_vclarity = (length(which(vclarity==0))/length(condition))*100,
+                w_vclarity = (length(which(vclarity==1))/length(condition))*100,
+                c_vcreativity = (length(which(vcreativity==0))/length(condition))*100,
+                w_vcreativity = (length(which(vcreativity==1))/length(condition))*100,
+                c_nclarity = (length(which(vclarity==0))/length(condition))*100,
+                w_nclarity = (length(which(nclarity==1))/length(condition))*100,
+                c_ncreativity = (length(which(ncreativity==0))/length(condition))*100,
+                w_ncreativity = (length(which(ncreativity==1))/length(condition))*100,
+                c_overall = (length(which(overall==0))/length(condition))*100,
+                w_overall = (length(which(overall==1))/length(condition))*100)
 
-chisq.test(vclarity, correct=FALSE)
-chisq.test(vcreativity, correct=FALSE)
-chisq.test(nclarity, correct=FALSE)
-chisq.test(ncreativity, correct=FALSE)
-chisq.test(overall, correct=FALSE)
-```
-```{r}
-
+counts
 ```
 
 
