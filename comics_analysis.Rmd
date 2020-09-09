@@ -17,6 +17,7 @@ library(coin)
 comics_data <- read.table("data.csv",header=TRUE,sep=",")
 head(comics_data)
 ```
+Each row is split into condition according to which comic was shown as "Comic A" in each pair. For OrderReversed=TRUE, the adaptive (wizard) comic was shown first; the opposite is true for for OrderReversed=FALSE. Each measure is assigned a 1 or 0 depending if comic A was chosen as the preferred comic for the measure.
 ```{r}
 comics_data <- group_by(comics_data,condition)
 aggregate <- summarise(comics_data,
@@ -61,6 +62,20 @@ counts <- summarise(data2,
                 w_overall = (length(which(overall==1))/length(condition))*100)
 
 counts
+```
+
+
+```{r}
+dm <- melt(aggregate[,c('condition','v_clarity','v_creativity','n_clarity','n_creativity','all')], id.vars=1)
+dm
+
+ggplot(dm, aes(variable,value)) +
+  geom_bar(aes(fill=condition), stat="identity") +
+  theme_bw() +
+  theme(text = element_text(size=18)) +
+  theme(legend.title = element_blank()) +
+  scale_fill_grey() +
+  coord_flip()
 ```
 
 
