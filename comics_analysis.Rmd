@@ -32,7 +32,7 @@ aggregate
 ```
 ```{r}
 vclarity <- table(comics_data$condition,comics_data$vclarity)
-chisq.test(vclarity,correct=FALSE)
+chisq.test(vclarity, correct=FALSE)
 
 vcreativity <- table(comics_data$condition,comics_data$vcreativity)
 chisq.test(vcreativity,correct=FALSE)
@@ -45,37 +45,6 @@ chisq.test(ncreativity,correct=FALSE)
 
 overall <- table(comics_data$condition,comics_data$overall)
 chisq.test(overall,correct=FALSE)
-```
-
-```{r}
-data2 <- read.table("data2.csv",header=TRUE,sep=",")
-counts <- summarise(data2,
-                c_vclarity = (length(which(vclarity==0))/length(condition))*100,
-                w_vclarity = (length(which(vclarity==1))/length(condition))*100,
-                c_vcreativity = (length(which(vcreativity==0))/length(condition))*100,
-                w_vcreativity = (length(which(vcreativity==1))/length(condition))*100,
-                c_nclarity = (length(which(vclarity==0))/length(condition))*100,
-                w_nclarity = (length(which(nclarity==1))/length(condition))*100,
-                c_ncreativity = (length(which(ncreativity==0))/length(condition))*100,
-                w_ncreativity = (length(which(ncreativity==1))/length(condition))*100,
-                c_overall = (length(which(overall==0))/length(condition))*100,
-                w_overall = (length(which(overall==1))/length(condition))*100)
-
-counts
-```
-
-
-```{r}
-dm <- melt(aggregate[,c('condition','v_clarity','v_creativity','n_clarity','n_creativity','all')], id.vars=1)
-dm
-
-ggplot(dm, aes(variable,value)) +
-  geom_bar(aes(fill=condition), stat="identity") +
-  theme_bw() +
-  theme(text = element_text(size=18)) +
-  theme(legend.title = element_blank()) +
-  scale_fill_grey() +
-  coord_flip()
 ```
 
 
