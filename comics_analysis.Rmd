@@ -47,4 +47,24 @@ overall <- table(comics_data$condition,comics_data$overall)
 chisq.test(overall,correct=FALSE)
 ```
 
+```{r}
+vclarity_glm <- glm(vclarity ~ condition + story, data=comics_data, family="binomial")
+summary(vclarity_glm)
+```
+```{r}
+vcreativity_glm <- glm(vcreativity ~ condition + story, data=comics_data, family="binomial")
+summary(vcreativity_glm)
+```
+```{r}
+nclarity_glm <- glm(nclarity ~ condition + story, data=comics_data, family="binomial")
+summary(nclarity_glm)
+```
+```{r}
+ncreativity_glm <- glm(ncreativity ~ condition + story, data=comics_data, family="binomial")
+summary(ncreativity_glm)
+```
+```{r}
+overall_glm <- glm(overall ~ condition + story, data=comics_data, family="binomial")
+summary(overall_glm)
+```
 
