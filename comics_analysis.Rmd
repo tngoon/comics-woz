@@ -26,7 +26,8 @@ aggregate <- summarise(comics_data,
                        v_creativity = length(which(vcreativity==1))/length(condition),
                        n_clarity = length(which(nclarity==1))/length(condition),
                        n_creativity = length(which(ncreativity==1))/length(condition),
-                       all = length(which(overall==1))/length(condition))
+                       all = length(which(overall==1))/length(condition),
+                       vis = )
 
 aggregate
 ```
@@ -66,5 +67,16 @@ summary(ncreativity_glm)
 ```{r}
 overall_glm <- glm(overall ~ condition + story, data=comics_data, family="binomial")
 summary(overall_glm)
+```
+```{r}
+irr <- read.table("irr.csv", header=TRUE, sep=",")
+head(irr)
+```
+```{r}
+irr <- group_by(irr, pair)
+irr
+```
+```{r}
+kappam.fleiss(irr)
 ```
 
