@@ -26,8 +26,7 @@ aggregate <- summarise(comics_data,
                        v_creativity = length(which(vcreativity==1))/length(condition),
                        n_clarity = length(which(nclarity==1))/length(condition),
                        n_creativity = length(which(ncreativity==1))/length(condition),
-                       all = length(which(overall==1))/length(condition),
-                       vis = )
+                       all = length(which(overall==1))/length(condition))
 
 aggregate
 ```
@@ -69,14 +68,37 @@ overall_glm <- glm(overall ~ condition + story, data=comics_data, family="binomi
 summary(overall_glm)
 ```
 ```{r}
-irr <- read.table("irr.csv", header=TRUE, sep=",")
+interactions <- read.table("interactions.csv",sep=",", header=TRUE)
+head(interactions)
+```
+```{r}
+interactions <- group_by(interactions,condition)
+int_aggregate <- summarise(interactions,
+                       n = length(condition),
+                       mean_suggestions=mean(num_suggestions),
+                       mean_examples_viewed = mean(num_examples),
+                       sd_examples = sd(num_examples),
+                       mean_examples_used = mean(num_examples_used),
+                       sd_examples_used = sd(num_examples_used),
+                       mean_drawing_help = mean(num_drawing_help),
+                       sd_drawing_help = sd(num_drawing_help))
+
+int_aggregate
+```
+
+```{r}
+#number of examples viewed
+t.test(interactions$num_examples[interactions$condition=="woz"],interactions$num_examples[interactions$condition=="control"])
+
+#number of times drawing helper used
+t.test(interactions$num_drawing_help[interactions$condition=="woz"],interactions$num_drawing_help[interactions$condition=="control"])
+
+```
+```{r}
+irr <- read.table("irr.csv",sep=",",header=TRUE)
 head(irr)
 ```
 ```{r}
-irr <- group_by(irr, pair)
-irr
-```
-```{r}
-kappam.fleiss(irr)
+kripp.alpha(as.matrix(irr))
 ```
 
