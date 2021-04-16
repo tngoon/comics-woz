@@ -94,11 +94,6 @@ t.test(interactions$num_examples[interactions$condition=="woz"],interactions$num
 t.test(interactions$num_drawing_help[interactions$condition=="woz"],interactions$num_drawing_help[interactions$condition=="control"])
 
 ```
-```{r}
-irr <- read.table("irr.csv",sep=",",header=TRUE)
-head(irr)
-```
-```{r}
-kripp.alpha(as.matrix(irr))
-```
+
+
 
